@@ -139,7 +139,14 @@ def projetonpls(X,Y,Fac,show):
           ssy=array([[ssy,sum(sum((Y-ypred)**2))]]);
 
       ypred = np.reshape(np.transpose(Ypred),[shape(Ypred,2) DimY])
-      ypred = np.permute(ypred,[2:ordY+1 1])
+      ypred = np.permute(ypred,[2:ordY+1 1])#verificar como eh o permute
+      ssx= [ [SSX(1);ssx] [0;100*(1-ssx/SSX(1))]];
+ssy= [ [SSy(1);ssy] [0;100*(1-ssy/SSy(1))]];
+
+for item in range(1:Fac):
+      tab = str(format,ssq(item,:,));
+      print(tab)
+
 
 
 
