@@ -139,13 +139,54 @@ def projetonpls(X,Y,Fac,show):
           ssy=array([[ssy,sum(sum((Y-ypred)**2))]]);
 
       ypred = np.reshape(np.transpose(Ypred),[shape(Ypred,2) DimY])
-      ypred = np.permute(ypred,[2:ordY+1 1])#verificar como eh o permute
+      ypred = np.transpose(ypred,[2:ordY+1 1])#verificar como eh o permute
       ssx= [ [SSX(1);ssx] [0;100*(1-ssx/SSX(1))]];
-ssy= [ [SSy(1);ssy] [0;100*(1-ssy/SSy(1))]];
+    ssy= [ [SSy(1);ssy] [0;100*(1-ssy/SSy(1))]];
 
-for item in range(1:Fac):
-      tab = str(format,ssq(item,:,));
-      print(tab)
+    for item in range(1:Fac):
+          tab = str(format,ssq(item,:,));
+          print(tab)
+    Xfactors = []
+    Xfactors[0]=T
+    for item in range(1:ordX-1):
+        Xfactors[item+1]=W[item]
+    Yfactors = []
+    Yfactors[0]=U
+    a=ordY-1
+    for intem in range(1:a.max):
+        Yfactors[item+1]=Q[item]
+R = outerm(W,0,1)#verificar função
+    for iy in range(1:shape(Y,2)):
+        if DimX.size == 2:
+            dd = [DimX[1], 1]
+        else:
+            dd = DimX[1:-1]
+      
+        for i in range(1:Fac):
+            sR = np.dot(R[:,1:i],B[1:i,1:i],diag(Q[0],[iy,1:i]))
+        ssR = np.transpose(sum(np.transpose(sR),1))
+        reg[iy,i] = reshape(ssR,dd)
+        function [wloads,wkron] = Xtu(X,u,Missing,miss,J,DimX,ord) #verificar
+        
+#fazer o produto da transposta de x com u
+if Missing
+   for i in range(1:J):
+       m = nonzero(miss(:,i));
+      if np.dot((np.transpose(u[m]),u[m]))!=0
+        ww=np.dot(np.transpose(X[m,i]),u[m])/dot(np.transpose(u[m]),u[m])
+      else
+        ww=np.dot(np.transpose(X[m,i]),u[m])
+      
+      if size(ww)==0:
+         w[i]=0
+      else:
+         w[i]=ww
+
+else:
+   w=np.dot(np.transpose(X),u)
+
+
+        
 
 
 
