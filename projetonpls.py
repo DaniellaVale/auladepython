@@ -1,9 +1,26 @@
 #projeto curso python
 # escrever a rotina N-PLS em linguagem python
-import numpy as np
+# projeto de aula de tradução do script de MATLAB de:
+# Copyright (C) 1995-2006  Rasmus Bro & Claus Andersson
+# Copenhagen University, DK-1958 Frederiksberg, Denmark, rb@life.ku.dk
+# $ Version 1.02 $ Date July 1998 $ Not compiled $
+# $ Version 1.03 $ Date 4. December 1998 $ Not compiled $ Cosmetic changes
+# $ Version 1.04 $ Date 4. December 1999 $ Not compiled $ Cosmetic changes
+# $ Version 1.05 $ Date July 2000 $ Not compiled $ error caused weights not to be normalized for four-way and higher
+# $ Version 1.06 $ Date November 2000 $ Not compiled $ increase max it and decrease conv crit to better handle difficult data
+# $ Version 2.00 $ May 2001 $ Changed to array notation $ RB $ Not compiled $
+# $ Version 2.01 $ June 2001 $ Changed to handle new core in X $ RB $ Not compiled $
+# $ Version 2.02 $ January 2002 $ Outputs all predictions (1 - LV components) $ RB $ Not compiled $
+# $ Version 2.03 $ March 2004 $ Changed initialization of u $ RB $ Not compiled $
+# $ Version 2.04 $ Jan 2005 $ Modified sign conventions of scores and loads $ RB $ Not compiled $
+# $ Version 3.00 $ Aug 2007 $ Serious error in sign switch fixed $ RB $ Not compiled $
 
+import numpy as np
+import matplotlib as plt
 def projetonpls(X,Y,Fac,show):
-    #X.argmin() 
+    '''Essa função calcula o modelo N-PLS para dados X de terceira ordem em correlação com Y'''
+    #INPUT => X:tensor de variaveis independentes; Y: tensor de variaveis dependentes; Fac: numero de componentes do modelo
+    #OUTPUT => Xfactors: lista que contem as componentes de X; Yfactors: lista que contem as componentes de Y; Core: tensor conector; B: coeficientes do modelo; Ypred: valores de Y previstos; ssx: variação explicada no espaço X
     maxit = 120
     DimX = X.shape
     X = np.reshape(X,DimX[1],np.prod(DimX[2:-1]))
@@ -184,6 +201,38 @@ if Missing
 
 else:
    w=np.dot(np.transpose(X),u)
+
+# modificar a dimenssão da matriz de dados w
+if size(DimX)>2:
+   w_reshaped=np.reshape(w,DimX[1],np.prod(DimX[3:size(DimX)]));
+else:
+   w_reshaped = w[:,]
+
+
+if size(DimX)==2
+   wloads[0] = w_reshaped/norm(w_reshaped)
+   
+elif size(DimX)==3 and False in isnan(w_reshaped):
+   [w1,s,w2]=linalg.svd(w_reshaped)
+   wloads[0]=w1[:,,0]
+   wloads[1]=w2[:,,0]
+else
+   wloads=parafac(reshape(w_reshaped,DimX(2:length(DimX))),1,[0 2 0 0 NaN]) # verificar a necessidade disso
+   for j in range(0:size(wloads))
+      wloads[j] = wloads[j]/norm(wloads[j])
+for i in range(0:size(wloads))
+   sq = (wloads[i]**2)*sign(wloads[i])
+   wloads[i] = np.dot(wloads[i],(sum(sq)<0))
+if size(wloads)==1
+   wkron = wloads[0]
+else
+   wkron = kron(wloads[-1],wloads[-2])
+   for o = [ord-3:-1:1]#criar uma lista decrescente de valores de ord-3 ate 1
+      wkron = kron(wkron,wloads[o])
+  
+
+
+  
 
 
         
